@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { ConfigModule } from '@nestjs/config';
       global: true,
 
     }),
-    ConfigModule.forRoot()
+    ConfigModule.forRoot(),
+    DatabaseModule
   ],
   controllers: [AppController],
   providers: [AppService],
