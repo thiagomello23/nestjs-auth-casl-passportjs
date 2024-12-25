@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Users } from 'src/users/users.entity';
 import { DatabaseRepositoryConstants } from 'src/constants';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'types';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +34,7 @@ export class AuthService {
             throw new UnauthorizedException("Email or password invalid!")
         }
 
-        const payload = {
+        const payload: JwtPayload = {
             sub: existingUser.id,
             email: existingUser.email
         }
