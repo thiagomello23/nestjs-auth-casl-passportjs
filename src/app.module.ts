@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { CaslModule } from './casl/casl.module';
 import { RolesModule } from './roles/roles.module';
 import { SeedModule } from './seed/seed.module';
+import { PermissionsModule } from './permissions/permissions.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { SeedModule } from './seed/seed.module';
     AuthModule,
     CaslModule,
     RolesModule,
-    SeedModule
+    SeedModule,
+    PermissionsModule
   ],
   controllers: [AppController],
   providers: [AppService],

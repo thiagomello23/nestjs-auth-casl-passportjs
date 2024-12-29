@@ -27,7 +27,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, JwtStrategyName) {
                 id: payload.sub
             },
             relations: {
-                roles: true
+                roles: {
+                    permissions: true
+                },
             }
         })
         if(!user) {
