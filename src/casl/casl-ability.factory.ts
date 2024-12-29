@@ -16,9 +16,9 @@ export class CaslAbilityFactory {
     >(Ability as AbilityClass<AppAbility>);
 
     for(const r of user.roles) {
-      // if(r.role === UserRole.ADMIN) {
-      //   console.log("ADMIN")
-      // }
+      if(r.role === UserRole.ADMIN) {
+        can(Action.Read, Users)
+      }
       if(r.role === UserRole.USER) {
         can(Action.Read, Users)
       }

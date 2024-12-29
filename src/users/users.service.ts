@@ -17,6 +17,7 @@ export class UsersService {
         private rolesRepository: Repository<Roles>
     ){}
 
+    // By default creates a user with just "USER" role
     async createUser(createUser: CreateUserDto) {
         const newUser = new Users();
 
@@ -36,12 +37,13 @@ export class UsersService {
         newUser.name = createUser.name
         newUser.password = criptPassword
 
-        // This is for test purpose only
-        const role = new Roles()
-        role.role = UserRole.USER
-        await this.rolesRepository.save(role)
+        const roleUser = await this.rolesRepository.findOne({
+            where: {
+                role: UserRole.USER
+            }
+        })
 
-        newUser.roles = [role]
+        newUser.roles = [roleUser]
 
         return await this.usersRepository.save(newUser)
     }

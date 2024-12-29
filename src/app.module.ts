@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CaslModule } from './casl/casl.module';
 import { RolesModule } from './roles/roles.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { RolesModule } from './roles/roles.module';
     UsersModule,
     AuthModule,
     CaslModule,
-    RolesModule
+    RolesModule,
+    SeedModule
   ],
   controllers: [AppController],
   providers: [AppService],
