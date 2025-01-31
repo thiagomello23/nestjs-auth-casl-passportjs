@@ -28,7 +28,7 @@ export class UsersService {
         })
 
         if(existingUser) {
-            throw new BadRequestException("User email already beeing used;")
+            throw new BadRequestException("User email already been used;")
         }
 
         const criptPassword = await bcrypt.hash(createUser.password, +process.env.BCRYPT_SALT)
