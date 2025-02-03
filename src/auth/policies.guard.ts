@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AppAbility, CaslAbilityFactory } from "src/casl/casl-ability.factory";
-import { CHECK_POLICIES_KEY } from "src/constants";
+import { CHECK_POLICIES_KEY, IS_PUBLIC_KEY } from "src/constants";
 
 interface IPolicyHandler {
     handle(ability: AppAbility): boolean;
@@ -19,6 +19,15 @@ export class PoliciesGuard implements CanActivate {
     ) {}
 
     async canActivate(context: ExecutionContext) {
+        const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+            context.getHandler(),
+            context.getClass(),
+        ]);
+
+        if(isPublic) {
+            return true;
+        }
+
         const policyHandlers = this.reflector.get<PolicyHandler[]>(
             CHECK_POLICIES_KEY,
             context.getHandler(),

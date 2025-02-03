@@ -7,6 +7,9 @@ import { AuthModule } from './auth/auth.module';
 import { CaslModule } from './casl/casl.module';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { PoliciesGuard } from './auth/policies.guard';
 
 @Module({
   imports: [
@@ -24,6 +27,15 @@ import { PermissionsModule } from './permissions/permissions.module';
     PermissionsModule
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PoliciesGuard,
+    },
+  ],
 })
 export class AppModule {}

@@ -3,9 +3,19 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { PoliciesGuard } from './auth/policies.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(new ValidationPipe())
+
+  // const jwtAuthGuard = app.get(JwtAuthGuard)
+  // const policiesGuard = app.get(PoliciesGuard)
+
+  // app.useGlobalGuards(jwtAuthGuard)
+  // app.useGlobalGuards(policiesGuard)
 
   const config = new DocumentBuilder()
   .setTitle('Auth API')
@@ -22,8 +32,6 @@ async function bootstrap() {
   
   const documentFactory = () => SwaggerModule.createDocument(app, config, options);
   SwaggerModule.setup('api', app, documentFactory);
-
-  app.useGlobalPipes(new ValidationPipe())
 
   await app.listen(process.env.PORT ?? 3000);
 }

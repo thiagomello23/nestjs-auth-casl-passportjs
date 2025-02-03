@@ -7,4 +7,6 @@ export const DatabaseRepositoryConstants = {
 
 export const JwtStrategyName = "JWT"
 
+export const IS_PUBLIC_KEY = 'isPublic';
+
 export const CHECK_POLICIES_KEY = 'check_policy';
