@@ -8,7 +8,7 @@ It's a simple project that can be reused like a base nestjs startup with authent
 ## How to run
 To run the project simply configure the .env file copy and pasting .env.example and filled up with your relevant data like database connection, just run like a normal NestJS project, if you don't known how to do that just go to a file called "README-NESTJS", its from Nestjs official documentation and it's a file generated as soon as the project is created using nestjs cli, and don't forget to run **npm install** before trying to startup the project.
 
-The project have a seed to create a default user and some default roles like ADMIN and USER with the default CASL permissions, the seed runs inside main.js only if you are in development environment with ENVIRONMENT variable set to "dev" on .env, after the seed successfully run a console message will show either advicing that runs with sucess or just warning that this seed just had already run, if you find annoying the messages just go to seed.service.ts and remove the console.logs.
+The project now has a seed script that can be run using "npm run build" and them "npm run seed", this command will trigger a typeorm migration to create a default admin user that can be configured inside .env and a default admin and user role and a default permission.
 
 ## Routes
 All routes are inside Auth folder in auth.controller.ts, the routes are:
