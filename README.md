@@ -17,4 +17,4 @@ All routes are inside Auth folder in auth.controller.ts, the routes are:
 - **login (/auth/login):** A login route that returns a access jwt token
 - **validateUser (/auth/validate):** A validate user route to validate if a user has the authorization to acess his content, this works to show how to authorize a user with passportjs and casl.
 
-If you want you could just use the insomnia file inside insomnia folder to known how to work with every route.
+If you want more details just use swagger API, run the project and go to http://localhost:YOUR_PORT/api or import the swagger file using "/api-json" route.
