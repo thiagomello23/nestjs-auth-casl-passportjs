@@ -2,13 +2,10 @@ import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "t
 import { UserRole } from "./enums/user-role";
 import { Users } from "src/users/users.entity";
 import { Permissions } from "src/permissions/permissions.entity";
+import { BaseEntity } from "src/database/base-entity.entity";
 
 @Entity()
-export class Roles {
-
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
-
+export class Roles extends BaseEntity {
     @Column({
         type: "enum",
         enum: UserRole,
