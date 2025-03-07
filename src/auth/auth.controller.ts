@@ -4,7 +4,6 @@ import { UsersService } from "src/users/users.service";
 import { LoginCredentialsDto } from "./dto/login-credentials.dto";
 import { AuthService } from "./auth.service";
 import { CheckPolicies } from "./decorators/check-policies.decorator";
-import { AppAbility } from "src/casl/casl-ability.factory";
 import { Action } from "src/casl/enums/casl-action";
 import { Users } from "src/users/users.entity";
 import { ApiBadRequestResponse, ApiBody, ApiOkResponse, ApiResponse, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
@@ -41,7 +40,10 @@ export class AuthController {
         return this.authService.login(loginCredentials)
     }
 
-    @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, "Users"))
+    @CheckPolicies({
+        action: Action.Read,
+        subject: "Users"
+    })
     @Get("validate")
     @ApiResponse({description: "returns a user by it's JWT payload!", type: Users})
     @ApiUnauthorizedResponse({description: "Invalid JWT or invalid jwt user payload!"})

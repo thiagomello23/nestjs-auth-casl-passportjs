@@ -2,7 +2,8 @@
 export const DatabaseRepositoryConstants = {
     usersRepository: "USERS_REPOSITORY",
     rolesRepository: "ROLES_REPOSITORY",
-    permissionsRepository: "PERMISSIONS_REPOSITORY"
+    permissionsRepository: "PERMISSIONS_REPOSITORY",
+    dataSource: "DATA_SOURCE",
 };
 
 export const JwtStrategyName = "JWT"

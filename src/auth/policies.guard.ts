@@ -1,21 +1,24 @@
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { ForbiddenError, subject } from "@casl/ability";
+import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { AppAbility, CaslAbilityFactory } from "src/casl/casl-ability.factory";
-import { CHECK_POLICIES_KEY, IS_PUBLIC_KEY } from "src/constants";
+import { CaslAbilityFactory, Subjects } from "src/casl/casl-ability.factory";
+import { Action } from "src/casl/enums/casl-action";
+import { CHECK_POLICIES_KEY, DatabaseRepositoryConstants, IS_PUBLIC_KEY } from "src/constants";
+import { DataSource } from "typeorm";
 
-interface IPolicyHandler {
-    handle(ability: AppAbility): boolean;
-  }
-  
-type PolicyHandlerCallback = (ability: AppAbility) => boolean;
-
-export type PolicyHandler = IPolicyHandler | PolicyHandlerCallback;
+export interface PolicyHandler {
+    action: Action;
+    subject: Subjects;
+    getSubject?: (context: ExecutionContext, dataSource: DataSource) => any;
+}
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
     constructor(
         private reflector: Reflector,
         private caslAbilityFactory: CaslAbilityFactory,
+        @Inject(DatabaseRepositoryConstants.dataSource)
+        private readonly dataSource: DataSource,
     ) {}
 
     async canActivate(context: ExecutionContext) {
@@ -27,7 +30,7 @@ export class PoliciesGuard implements CanActivate {
         if(isPublic) {
             return true;
         }
-
+        
         const policyHandlers = this.reflector.get<PolicyHandler[]>(
             CHECK_POLICIES_KEY,
             context.getHandler(),
@@ -36,16 +39,31 @@ export class PoliciesGuard implements CanActivate {
         const { user } = context.switchToHttp().getRequest()
         const ability = this.caslAbilityFactory.createForUser(user);
 
-
-        return policyHandlers.every((handler) =>
-            this.execPolicyHandler(handler, ability),
-        );
-    }
-
-    private execPolicyHandler(handler: PolicyHandler, ability: AppAbility) {
-        if (typeof handler === 'function') {
-          return handler(ability);
+        for(const p of policyHandlers) {
+            try {
+                if(p?.getSubject) {
+                    ForbiddenError
+                        .from(ability)
+                        .throwUnlessCan(
+                            p.action,
+                            subject(
+                                p.subject,
+                                await p?.getSubject(context, this.dataSource),
+                            )
+                        )
+                } else {
+                    ForbiddenError
+                        .from(ability)
+                        .throwUnlessCan(
+                            p.action,
+                            p.subject
+                        )
+                }
+            }catch(err) {
+                throw new UnauthorizedException()
+            }
         }
-        return handler.handle(ability);
+
+        return true
     }
 }
