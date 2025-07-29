@@ -7,7 +7,7 @@ import { Permissions } from "src/permissions/permissions.entity";
 import * as bcrypt from "bcrypt"
 import "dotenv/config";
 
-export class CreateSeed1738584956182 implements MigrationInterface {
+export class CreateSeedUser1738584956183 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
 

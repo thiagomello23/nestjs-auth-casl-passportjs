@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
       __dirname + '/../**/*.entity{.ts,.js}',
   ],
   migrations: ["dist/database/migrations/*.js"],
-  synchronize: true,
+  synchronize: false,
 })
 
 export const databaseProviders = [
